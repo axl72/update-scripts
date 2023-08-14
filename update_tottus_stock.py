@@ -24,7 +24,7 @@ def update():
     filename = Path(chooser.select_file())
     df = get_stock(filename, read_csv_tottus, tottus_stock_normalizer, export=False)
     df.to_sql('stock_tottus', engine, index=False, if_exists='append')
-    print("uploaded data")   
+    print("data de inventario tottus cargada")   
 
 
 

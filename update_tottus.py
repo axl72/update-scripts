@@ -24,7 +24,7 @@ def update():
     directory = Path(chooser.select_directory())
     df = consolidate(directory, read_csv_tottus, tottus_normalizer, export=False)
     df.to_sql('ventas_tottus', engine, index=False, if_exists='append')
-    print("uploaded stock data")   
+    print("data de ventas tottus cargada")   
 
 
 
