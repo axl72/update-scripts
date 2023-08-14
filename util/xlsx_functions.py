@@ -23,6 +23,14 @@ def read_csv_oeschle_stock(path:str):
     df['fecha'] = str(path).split('\\')[-1].split('.')[0]
     return df
 
+def read_xlsx_tailoy_stock(path:str):
+    df = pd.read_excel(path, header=None)
+    df = df.drop(range(7))
+    df.columns = df.iloc[0]
+    df = df[1:]
+    df['FECHA'] = str(path).split('\\')[-1].split('.')[0]
+    return df
+
 def read_csv_tottus(path:str):
     warnings.filterwarnings("ignore")
     print(f"Leyendo archivo {path}")
