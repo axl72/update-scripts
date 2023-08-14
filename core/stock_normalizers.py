@@ -1,5 +1,17 @@
 import pandas as pd
 
+def tailoy_stock_normalizer(df:pd.DataFrame) -> pd.DataFrame:
+    
+    # print(df.head()["COMPRADOR"])
+    for column in ["COMPRADOR", "GRUPO", "CATEGORÍA", "UNIDAD BASE", "ABC", "ESTADO", "STOCK FÍSICO TOTAL"]:
+        df.pop(column)
+
+    df = df.melt(id_vars=["CÓDIGO SAP", "CÓDIGO AS400", "DESCRIPCIÓN"], value_name="LOCAL", value_vars="STOCK")
+    df['CÓDIGO SAP'] = df['CÓDIGO SAP'].astype(float)
+    df['CÓDIGO AS400'] = df['CÓDIGO AS400'].astype(float)
+    return df
+
+
 def oechsle_stock_normalizer(df:pd.DataFrame) -> pd.DataFrame:
     target_columns = ["fecha", "COD_OECHSLE", "COD_LOCAL", "STOCK(U)", "TRANSITO(U)", "STOCKNODISP.(U)", "ASIGNADO(U)"]
     df = df[target_columns]
@@ -53,3 +65,8 @@ def ripley_stock_normalizer(df:pd.DataFrame) -> pd.DataFrame:
     temp.rename(columns=renombre, inplace=True)
 
     return temp[nuevas_columnas]
+
+if __name__ == "__main__":
+    df = pd.read_excel('C:\\Users\\abernabel\\Downloads\\Stock-20230814-001353.xlsx', header=None) 
+    df = tailoy_stock_normalizer(df)
+    df.to_excel('output_stock.xlsx', index=False)
