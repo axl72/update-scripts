@@ -14,7 +14,7 @@ def update():
     print(f"Directorio seleccionado {directory}")
     df = consolidate(directory, read_excel, ripley_normalizer)
     df.to_sql('ventas_ripley', engine, index=False, if_exists='append')
-    print("uploaded data")
+    print("VENTAS RIPLEY CARGADA")
 
 if __name__ == "__main__":
     update()
