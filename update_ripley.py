@@ -4,6 +4,7 @@ from util.xlsx_functions import consolidate, read_excel
 from core.normalizers import ripley_normalizer
 from util.whateveryouchooser import Chooser
 from util.conexiones import IntekConnector
+import warnings
 
 
 
@@ -13,8 +14,10 @@ def update():
     directory = Path(Chooser().select_directory())
     print(f"Directorio seleccionado {directory}")
     df = consolidate(directory, read_excel, ripley_normalizer)
-    df.to_sql('ventas_ripley', engine, index=False, if_exists='append')
-    print("VENTAS RIPLEY CARGADA")
+    df.to_excel("C:\\Users\\abernabel\\Desktop\\Update\\output-ripley.xlsx", index=False)
+    print("OUTPUT VENTAS RIPILEY GENERADO")
+    # df.to_sql('ventas_ripley', engine, index=False, if_exists='append')
+    # print("VENTAS RIPLEY CARGADA")
 
 if __name__ == "__main__":
     update()
