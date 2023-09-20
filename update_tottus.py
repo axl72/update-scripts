@@ -23,8 +23,10 @@ def update():
     chooser = Chooser()
     directory = Path(chooser.select_directory())
     df = consolidate(directory, read_csv_tottus, tottus_normalizer, export=False)
-    df.to_sql('ventas_tottus', engine, index=False, if_exists='append')
-    print("data de ventas tottus cargada")   
+    df.to_excel("C:\\Users\\abernabel\\Desktop\\Update\\output-ventas-tottus.xlsx", index=False)
+    # df.to_sql('ventas_tottus', engine, index=False, if_exists='append')
+    # print("data de ventas tottus cargada")   
+    print("Consolidado de ventas Tottus generado")
 
 
 
