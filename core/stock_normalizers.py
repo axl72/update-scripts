@@ -2,14 +2,20 @@ import pandas as pd
 
 def tailoy_stock_normalizer(df:pd.DataFrame) -> pd.DataFrame:
     
+    df = df.drop(index=range(7))
+    df.columns = df.iloc[0]
+    df = df[1:]
     # print(df.head()["COMPRADOR"])
+    df.reset_index(drop=True)
+    df.columns.name = None
     for column in ["COMPRADOR", "GRUPO", "CATEGORÍA", "UNIDAD BASE", "ABC", "ESTADO", "STOCK FÍSICO TOTAL"]:
         df.pop(column)
-
-    df = df.melt(id_vars=["CÓDIGO SAP", "CÓDIGO AS400", "DESCRIPCIÓN"], value_name="LOCAL", value_vars="STOCK")
+    print(df.columns)
+    df = df.melt(id_vars=["CÓDIGO SAP", "CÓDIGO AS400", "DESCRIPCIÓN"], var_name="LOCAL", value_name="STOCK")
+    print(f"Columnas despues del melt del proceso {df.columns}")
     df['CÓDIGO SAP'] = df['CÓDIGO SAP'].astype(float)
     df['CÓDIGO AS400'] = df['CÓDIGO AS400'].astype(float)
-    return df
+    return df[df["STOCK"] != 0]
 
 
 def oechsle_stock_normalizer(df:pd.DataFrame) -> pd.DataFrame:
