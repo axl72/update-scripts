@@ -7,8 +7,9 @@ import warnings
 def read_excel(path):
     warnings.filterwarnings("ignore")
     print(f"Leyendo archivo {path}")
+    df = pd.read_excel(path, header=None)
     warnings.filterwarnings("default") 
-    return pd.read_excel(path, header=None)
+    return df
 
 def read_csv(path):
     warnings.filterwarnings("ignore")
@@ -55,6 +56,7 @@ def get_stock(filename, read_file=pd.read_excel, normalizer=None, export=False):
     return df
 
 def consolidate(files:pathlib.Path, read_file=read_excel, normalizer=None, export=False):
+    warnings.filterwarnings("ignore", category=UserWarning, module="openpyxl")
     dataframe_list = [read_file(path) for path in files.iterdir()]
     print("Files read successfully")
     if normalizer:
