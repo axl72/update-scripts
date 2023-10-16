@@ -12,8 +12,10 @@ def update():
     chooser = Chooser()
     filename = Path(chooser.select_file())
     df = get_stock(filename, read_excel, ripley_stock_normalizer, export=False)
-    df.to_sql('stock_ripley', engine, index=False, if_exists='append')
-    print("INVENTARIO RIPLEY CARGADO")   
+    df.to_excel("C:\\Users\\abernabel\\Desktop\\Update\\output-stock-ripley.xlsx", index=False)
+    # df.to_sql('stock_ripley', engine, index=False, if_exists='append')
+    # print("INVENTARIO RIPLEY CARGADO")   
+    print("Data de inventarios de ripley generada")
 
 
 
