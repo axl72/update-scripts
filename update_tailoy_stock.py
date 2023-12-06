@@ -1,18 +1,22 @@
 import config
 from pathlib import Path
-from util.xlsx_functions import consolidate, read_excel
-from core.normalizers import tailoy_normalizer
+from util.xlsx_functions import get_stock, read_excel
+from core.stock_normalizers import tailoy_stock_normalizer
 from util.whateveryouchooser import Chooser
 from util.conexiones import IntekConnector
 
 def update():
     connector = IntekConnector()
     engine = connector.create_engine()
-    directory = Path(Chooser().select_directory())
-    print(f"Directorio seleccionado {directory}")
-    df = consolidate(directory, read_excel, tailoy_normalizer)
-    df.to_sql('stock_tailoy', engine, index=False, if_exists='append')
-    print("uploaded data")
+    selected_directory = Chooser().select_file()
+    if selected_directory == "":
+        return
+    file = Path(selected_directory)
+    print(f"Excel de stock seleccionado {file}")
+    df = get_stock(file, read_excel, tailoy_stock_normalizer)
+    print(df.columns)
+    df.to_excel("C:\\Users\\abernabel\\Desktop\\Update\\output-stock-tailoy.xlsx", index=False)
+    print("Stock Tai Loy generado con exito")
 
 if __name__ == "__main__":
     update()

@@ -23,8 +23,10 @@ def update():
     chooser = Chooser()
     filename = Path(chooser.select_file())
     df = get_stock(filename, read_csv_tottus, tottus_stock_normalizer, export=False)
-    df.to_sql('stock_tottus', engine, index=False, if_exists='append')
-    print("data de inventario tottus cargada")   
+    df.to_excel("C:\\Users\\abernabel\\Desktop\\Update\\output-stock-tottus.xlsx", index=False)
+    print("Stock tottus generado")
+    # df.to_sql('stock_tottus', engine, index=False, if_exists='append')
+    # print("data de inventario tottus cargada")   
 
 
 

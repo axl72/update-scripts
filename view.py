@@ -2,7 +2,7 @@ import tkinter
 from tkinter import Button, Frame, StringVar
 from tkinter.ttk import Combobox, Separator
 from update import update
-from core.normalizers import tottus_normalizer, ripley_normalizer
+from core.normalizers import tottus_normalizer, ripley_normalizer, saga_normalizer
 from core.stock_normalizers import tottus_stock_normalizer, ripley_stock_normalizer
 from util.whateveryouchooser import Chooser
 from util.xlsx_functions import consolidate, get_stock
@@ -11,7 +11,7 @@ from util.xlsx_functions import read_csv_tottus, read_excel
 
 outputs = {"TOTTUS":(tottus_normalizer, tottus_stock_normalizer, read_csv_tottus),
            "RIPLEY":(ripley_normalizer, ripley_stock_normalizer, read_excel),
-           "SAGA FALABELLA": ()}
+           "SAGA FALABELLA": (saga_normalizer, None, )}
 
 
 

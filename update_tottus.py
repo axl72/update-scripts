@@ -29,8 +29,6 @@ def update():
     print("Consolidado de ventas Tottus generado")
 
 
-
-
 if __name__ == "__main__":
     update()
 

@@ -17,6 +17,9 @@ def read_csv(path):
     return pd.read_csv(path, sep=',', encoding='latin1')
     warnings.filterwarnings("default") 
 
+def read_csv_saga_falabella(path):
+    return pd.read_csv(path, sep='|', encoding='latin1')
+
 def read_csv_oeschle_stock(path:str):
     warnings.filterwarnings("ignore")
     print(f"Leyendo archivo {path}")
