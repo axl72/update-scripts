@@ -2,19 +2,20 @@ import tkinter
 from tkinter import Button, Frame, StringVar
 from tkinter.ttk import Combobox, Separator
 from update import update
-from core.normalizers import tottus_normalizer, ripley_normalizer, saga_normalizer
+from core.normalizers import tottus_normalizer, ripley_normalizer, saga_normalizer, TottusNormalizer, TaiLoyNormalizer, RipleyNormalizer, OechsleNormalizer, SagaNormalizer, EstilosNormalizer 
+from core.updater import Updater
 from core.stock_normalizers import tottus_stock_normalizer, ripley_stock_normalizer
 from util.whateveryouchooser import Chooser
 from util.xlsx_functions import consolidate, get_stock
 from pathlib import Path
 from util.xlsx_functions import read_csv_tottus, read_excel
 
+
 outputs = {"TOTTUS":(tottus_normalizer, tottus_stock_normalizer, read_csv_tottus),
            "RIPLEY":(ripley_normalizer, ripley_stock_normalizer, read_excel),
            "SAGA FALABELLA": (saga_normalizer, None, )}
 
-
-
+normalizers = (TottusNormalizer(), RipleyNormalizer(), OechsleNormalizer(), TaiLoyNormalizer(), EstilosNormalizer(), SagaNormalizer())
 
 class MainWindow(tkinter.Tk):
     def __init__(self, screenName: str | None = None, baseName: str | None = None, className: str = "Tk", useTk: bool = True, sync: bool = False, use: str | None = None) -> None:
@@ -25,6 +26,8 @@ class MainWindow(tkinter.Tk):
         self.values = ["TOTTUS", "RIPLEY", "OECHSLE", "TAI LOY", "ESTILOS", "SAGA FALABELLA"]
         self.cliente_seleccionado = StringVar()
         self.combobox_cliente = Combobox(self.frame, values=self.values, textvariable=self.cliente_seleccionado)
+
+        self.combobox_cliente.bind("<<ComboboxSelected>>", self.on_combobox_change)
         # self.combobox_tipo = Combobox(self.frame)
         self.boton_ventas = Button(self.frame, text="VENTAS", command=self.create_output_ventas)
         self.boton_stock = Button(self.frame, text="INVENTARIO", command=self.create_output_stock)
@@ -47,9 +50,11 @@ class MainWindow(tkinter.Tk):
         return button
         
     def create_output_ventas(self):
-        normalizer, stock_normalizer, reader = outputs[self.cliente_seleccionado.get()]
-        filename =  f"output-ventas-{self.cliente_seleccionado.get().lower()}.xlsx"
-        update(reader, normalizer, self.__select_directory__(), consolidate, filename)
+        normalizer = normalizers[self.selected_index]
+        path = self.__select_directory__()
+        updater = Updater()
+        updater.consolidate(path, normalizer)
+
 
     def create_output_stock(self):
         normalizer, stock_normalizer, reader = outputs[self.cliente_seleccionado.get()]
@@ -71,6 +76,10 @@ class MainWindow(tkinter.Tk):
             return
         file = Path(selected_file)
         return file
+    def on_combobox_change(self, event):
+        self.selected_index = self.combobox_cliente.current()
+        self.cliente_seleccionado.set(normalizers[self.selected_index])
+        print(f"Cliente seleccionado {self.cliente_seleccionado}")
 
 root = MainWindow()
 root.mainloop() # app
