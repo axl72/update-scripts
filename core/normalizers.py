@@ -168,8 +168,18 @@ class TaiLoyNormalizer(Normalizer):
     def __str__(self):
         return "TAI LOY"
     
-    def normalize_stock(self, df:DataFrame):
-        pass
+    def normalize_stock(self, df:DataFrame) -> DataFrame:
+        result = df.iloc[6:]
+        result.columns = result.iloc[0]
+        result.reset_index(drop=True, inplace=True)
+        result = result[1:]
+        columnas_a_eliminar = ['STOCK FÍSICO TOTAL', 'GRUPO', 'CATEGORÍA', 'UNIDAD BASE', 'ESTADO', 'COMPRADOR', 'ABC']
+        result = result.drop(columnas_a_eliminar, axis=1)
+        result = pd.melt(result, id_vars=['CÓDIGO AS400', 'CÓDIGO SAP', 'DESCRIPCIÓN'], var_name='TIENDA', value_name='UNIDADES', col_level=0)
+        result = result[result['UNIDADES'] != 0]
+        result['CÓDIGO AS400'] = result['CÓDIGO AS400'].astype(int)
+        result['CÓDIGO SAP'] = result['CÓDIGO SAP'].astype(int)
+        return result
 
 class TottusNormalizer(Normalizer):
     def read(self, pathdir:Path) -> list[DataFrame]:
