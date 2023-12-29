@@ -9,11 +9,16 @@ from pandas._libs.tslibs.timestamps import Timestamp
 from zipfile import ZipFile
 from io import BytesIO
 import numpy as np
+
 class SagaNormalizer(Normalizer):
     def read(self, pathdir:Path):
         pass
     def normalize_sells(self, df:DataFrame):
         pass
+
+    def normalize_stock(self, df:DataFrame):
+        pass
+
 class EstilosNormalizer(Normalizer):
     def read(self, pathdir:Path):
         df_list = []
@@ -49,6 +54,9 @@ class EstilosNormalizer(Normalizer):
         df = df.drop(['Division'], axis=1)
         return df
     
+    def normalize_stock(self, df:DataFrame):
+        pass
+    
     def __str__(self):
         return "ESTILOS"
 
@@ -62,6 +70,7 @@ class OechsleNormalizer(Normalizer):
                 df = pd.read_csv(contenido_csv, sep=',', encoding='latin1') 
                 df_list.append(df)
         return df_list
+
     def normalize_sells(self, df:DataFrame):
         df = df.rename(columns={'PERIODO': 'FECHA'})
         df['FECHA'] = pd.to_datetime(df['FECHA'])
@@ -72,6 +81,10 @@ class OechsleNormalizer(Normalizer):
 
     def __str__(self):
         return 'OECHSLE'
+    
+    def normalize_stock(self, df:DataFrame):
+        pass
+
 class RipleyNormalizer(Normalizer):
     def read(self, pathdir:Path):
         return  [pd.read_excel(path, header=None) for path in pathdir.iterdir() if str(path.absolute()).endswith('.xlsx')]
@@ -102,6 +115,10 @@ class RipleyNormalizer(Normalizer):
     
     def __str__(self):
         return "RIPLEY"
+    
+    def normalize_stock(self, df:DataFrame):
+        pass
+
 class TaiLoyNormalizer(Normalizer):
     def obtenerSemanaComercial(self, fecha_inicio:Timestamp):
 
@@ -150,6 +167,10 @@ class TaiLoyNormalizer(Normalizer):
     
     def __str__(self):
         return "TAI LOY"
+    
+    def normalize_stock(self, df:DataFrame):
+        pass
+
 class TottusNormalizer(Normalizer):
     def read(self, pathdir:Path) -> list[DataFrame]:
         df_list = []
@@ -175,10 +196,8 @@ class TottusNormalizer(Normalizer):
     def __str__(self):
         return 'TOTTUS'
 
-
-
-
-
+    def normalize_stock(df:DataFrame):
+        pass
 
 def ripley_normalizer(df:pd.DataFrame):
     """Funcion que sirve para normalizar un dataframe de Ripley. Normalizar implica que el archivo descargado del B2B de ripley quede en forma normal para el análisis."""

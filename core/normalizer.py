@@ -12,3 +12,7 @@ class Normalizer(ABC):
     def read(self, pathdir:Path) -> list[DataFrame]:
         pass
 
+    @abstractclassmethod
+    def normalize_stock(self, df:DataFrame) -> DataFrame:
+        pass
+
