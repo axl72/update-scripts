@@ -16,3 +16,6 @@ class Normalizer(ABC):
     def normalize_stock(self, df:DataFrame) -> DataFrame:
         pass
 
+    @abstractclassmethod
+    def read_stock(self, df:DataFrame) -> DataFrame:
+        pass

@@ -36,7 +36,6 @@ def read_xlsx_tailoy_stock(path:str):
     return df
 
 def read_csv_tottus(path:str):
-    warnings.filterwarnings("ignore")
     print(f"Leyendo archivo {path}")
     df =  pd.read_csv(path, sep=',', encoding='latin1')
     df['fecha'] = str(path).split('\\')[-1].split('.')[0]

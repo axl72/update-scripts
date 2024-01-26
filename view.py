@@ -1,19 +1,10 @@
 import tkinter
 from tkinter import Button, Frame, StringVar
 from tkinter.ttk import Combobox, Separator
-from update import update
-from core.normalizers import tottus_normalizer, ripley_normalizer, saga_normalizer, TottusNormalizer, TaiLoyNormalizer, RipleyNormalizer, OechsleNormalizer, SagaNormalizer, EstilosNormalizer 
+from core.normalizers import TottusNormalizer, TaiLoyNormalizer, RipleyNormalizer, OechsleNormalizer, SagaNormalizer, EstilosNormalizer 
 from core.updater import Updater
-from core.stock_normalizers import tottus_stock_normalizer, ripley_stock_normalizer
 from util.whateveryouchooser import Chooser
-from util.xlsx_functions import consolidate, get_stock
 from pathlib import Path
-from util.xlsx_functions import read_csv_tottus, read_excel
-
-
-outputs = {"TOTTUS":(tottus_normalizer, tottus_stock_normalizer, read_csv_tottus),
-           "RIPLEY":(ripley_normalizer, ripley_stock_normalizer, read_excel),
-           "SAGA FALABELLA": (saga_normalizer, None, )}
 
 normalizers = (TottusNormalizer(), RipleyNormalizer(), OechsleNormalizer(), TaiLoyNormalizer(), EstilosNormalizer(), SagaNormalizer())
 
@@ -53,13 +44,14 @@ class MainWindow(tkinter.Tk):
         normalizer = normalizers[self.selected_index]
         path = self.__select_directory__()
         updater = Updater()
-        updater.consolidate(path, normalizer)
+        updater.consolidate_sells(path, normalizer)
 
 
     def create_output_stock(self):
-        normalizer, stock_normalizer, reader = outputs[self.cliente_seleccionado.get()]
-        filename = f"output-stock-{self.cliente_seleccionado.get().lower()}.xlsx"
-        update(reader, stock_normalizer, self.__select_file__(), get_stock, filename)
+        normalizer = normalizers[self.selected_index]
+        path = self.__select_file__()
+        updater = Updater()
+        updater.create_stock(path, normalizer)
     
     def __select_directory__(self) -> Path:
         selected_directory = Chooser().select_directory()
