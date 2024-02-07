@@ -186,7 +186,8 @@ class RipleyNormalizer(Normalizer):
         nuevas_columnas = ["fecha", "codigo_sucursal", "sku", "stock_soles", "stock_unidades"]
         renombre = {clave: valor for clave, valor in zip(target_columns, nuevas_columnas)}
         temp.rename(columns=renombre, inplace=True)
-        temp = temp[temp["sku"] != ""]
+        print("Se filtraran la unidades")
+        temp = temp[temp["stock_unidades"] != 0]
 
         return temp[nuevas_columnas]
 
