@@ -2,3 +2,5 @@ __pycache__/
 *.pyc
 nc.sql
 nd.sql
+build
+dist
