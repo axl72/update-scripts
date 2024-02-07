@@ -75,6 +75,17 @@ def consolidate(files:pathlib.Path, read_file=read_excel, normalizer=None, expor
         merge_df.to_excel(path, index=False, engine='openpyxl')
     print("completed consolidation")
     return merge_df
+
+def get_available_path(path:pathlib.Path, name=None, index=0):
+    import os
+    if os.path.exists(path):
+        i = index + 1
+        add_version = f"({i})"
+        filename = path.stem if name == None else name
+        new_filename = f"{filename} {add_version}{path.suffix}"
+        
+        return get_available_path(path.with_name(new_filename), name=filename, index=i)
+    return path
     
 if __name__ == "__main__":
     file_to_update = pathlib.Path(wyc.Chooser().select_directory())
