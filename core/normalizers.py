@@ -160,7 +160,10 @@ class RipleyNormalizer(Normalizer):
     
     def read_stock(self, pathfile:Path) -> DataFrame:
         if str(pathfile.absolute()).endswith('.xlsx'):
-            pd.read_excel(pathfile, header=None)
+            df = pd.read_excel(pathfile, header=None)
+            print("Archivo Ripley leido con exito")
+            return df
+
     
     def normalize_stock(self, df:DataFrame):
         """Funcion que sirve para normalizar un dataframe de Ripley. Normalizar implica que el archivo descargado del B2B de ripley quede en forma normal para el análisis."""
@@ -183,6 +186,7 @@ class RipleyNormalizer(Normalizer):
         nuevas_columnas = ["fecha", "codigo_sucursal", "sku", "stock_soles", "stock_unidades"]
         renombre = {clave: valor for clave, valor in zip(target_columns, nuevas_columnas)}
         temp.rename(columns=renombre, inplace=True)
+        temp = temp[temp["sku"] != ""]
 
         return temp[nuevas_columnas]
 
