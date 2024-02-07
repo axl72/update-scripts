@@ -5,6 +5,7 @@ from core.normalizers import TottusNormalizer, TaiLoyNormalizer, RipleyNormalize
 from core.updater import Updater
 from util.whateveryouchooser import Chooser
 from pathlib import Path
+from tkinter import messagebox
 
 normalizers = (TottusNormalizer(), RipleyNormalizer(), OechsleNormalizer(), TaiLoyNormalizer(), EstilosNormalizer(), SagaNormalizer())
 
@@ -12,6 +13,7 @@ class MainWindow(tkinter.Tk):
     def __init__(self, screenName: str | None = None, baseName: str | None = None, className: str = "Tk", useTk: bool = True, sync: bool = False, use: str | None = None) -> None:
         super().__init__(screenName, baseName, className, useTk, sync, use)
         self.geometry("230x300")
+        self.iconbitmap("C:\\Users\\USUARIO\\Desktop\\ENTORNO\\perro-tejonero.ico")
         self.title("Updater")
         self.frame = Frame(self)
         self.values = ["TOTTUS", "RIPLEY", "OECHSLE", "TAI LOY", "ESTILOS", "SAGA FALABELLA"]
@@ -45,16 +47,19 @@ class MainWindow(tkinter.Tk):
         path = self.__select_directory__()
         updater = Updater()
         filename = f"OUTPUT-{normalizer}.xlsx"
-        updater.consolidate_sells(path, normalizer, filename)
+        path = updater.consolidate_sells(path, normalizer, filename)
         print("Ventas creado con exito")
+        messagebox.showinfo("Terminado", f"Archivo {path} creado con éxito")
 
     def create_output_stock(self):
         normalizer = normalizers[self.selected_index]
         path = self.__select_file__()
         updater = Updater()
         filename = f"STOCK-OUTPUT-{normalizer}.xlsx"
-        updater.create_stock(path, normalizer, filename)
+        path = updater.create_stock(path, normalizer, filename)
         print("Stock creado con exito")
+        messagebox.showinfo("Terminado", f"Archivo {path} creado con éxito")
+
     
     def __select_directory__(self) -> Path:
         selected_directory = Chooser().select_directory()
