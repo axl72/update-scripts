@@ -52,7 +52,7 @@ class MainWindow(tkinter.Tk):
         normalizer = normalizers[self.selected_index]
         path = self.__select_file__()
         updater = Updater()
-        filename = f"OUTPUT-{normalizer}.xlsx"
+        filename = f"STOCK-OUTPUT-{normalizer}.xlsx"
         updater.create_stock(path, normalizer, filename)
         print("Stock creado con exito")
     
