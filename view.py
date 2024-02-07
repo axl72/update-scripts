@@ -44,14 +44,17 @@ class MainWindow(tkinter.Tk):
         normalizer = normalizers[self.selected_index]
         path = self.__select_directory__()
         updater = Updater()
-        updater.consolidate_sells(path, normalizer)
-
+        filename = f"OUTPUT-{normalizer}.xlsx"
+        updater.consolidate_sells(path, normalizer, filename)
+        print("Ventas creado con exito")
 
     def create_output_stock(self):
         normalizer = normalizers[self.selected_index]
         path = self.__select_file__()
         updater = Updater()
-        updater.create_stock(path, normalizer)
+        filename = f"OUTPUT-{normalizer}.xlsx"
+        updater.create_stock(path, normalizer, filename)
+        print("Stock creado con exito")
     
     def __select_directory__(self) -> Path:
         selected_directory = Chooser().select_directory()
