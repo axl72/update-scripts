@@ -6,6 +6,7 @@ from core.updater import Updater
 from util.whateveryouchooser import Chooser
 from pathlib import Path
 from tkinter import messagebox
+import os
 
 normalizers = (TottusNormalizer(), RipleyNormalizer(), OechsleNormalizer(), TaiLoyNormalizer(), EstilosNormalizer(), SagaNormalizer())
 
@@ -41,6 +42,10 @@ class MainWindow(tkinter.Tk):
         button = Button(text=text, command=function, padx=55, pady=10, borderwidth=5)
         button.pack(padx=5, pady=5)
         return button
+    
+    def __open_excel__(self, path):
+        os.startfile(path)
+
         
     def create_output_ventas(self):
         normalizer = normalizers[self.selected_index]
@@ -49,7 +54,9 @@ class MainWindow(tkinter.Tk):
         filename = f"OUTPUT-{normalizer}.xlsx"
         path = updater.consolidate_sells(path, normalizer, filename)
         print("Ventas creado con exito")
-        messagebox.showinfo("Terminado", f"Archivo {path} creado con éxito")
+        response = messagebox.showinfo("Terminado", f"Archivo {path.name} creado con éxito ¿Abrir?")
+        if response:
+            self.__open_excel__(path)
 
     def create_output_stock(self):
         normalizer = normalizers[self.selected_index]
@@ -58,7 +65,9 @@ class MainWindow(tkinter.Tk):
         filename = f"STOCK-OUTPUT-{normalizer}.xlsx"
         path = updater.create_stock(path, normalizer, filename)
         print("Stock creado con exito")
-        messagebox.showinfo("Terminado", f"Archivo {path} creado con éxito")
+        response = messagebox.askyesno("Terminado", f"Archivo {path.name} creado con éxito ¿Abrir?")
+        if response:
+            self.__open_excel__(path)
 
     
     def __select_directory__(self) -> Path:
