@@ -24,7 +24,7 @@ class MainWindow(tkinter.Tk):
         self.frame = Frame(self)
         self.values = ["TOTTUS", "RIPLEY", "OECHSLE", "TAI LOY", "ESTILOS", "SAGA FALABELLA"]
         self.cliente_seleccionado = StringVar()
-        self.combobox_cliente = Combobox(self.frame, values=self.values, textvariable=self.cliente_seleccionado)
+        self.combobox_cliente = Combobox(self.frame, state="readonly", values=self.values, textvariable=self.cliente_seleccionado)
 
         self.combobox_cliente.bind("<<ComboboxSelected>>", self.on_combobox_change)
         # self.combobox_tipo = Combobox(self.frame)
