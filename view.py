@@ -7,6 +7,7 @@ from util.whateveryouchooser import Chooser
 from pathlib import Path
 from tkinter import messagebox
 import os
+from config import ICON_PATH
 
 normalizers = (TottusNormalizer(), RipleyNormalizer(), OechsleNormalizer(), TaiLoyNormalizer(), EstilosNormalizer(), SagaNormalizer())
 
@@ -14,7 +15,11 @@ class MainWindow(tkinter.Tk):
     def __init__(self, screenName: str | None = None, baseName: str | None = None, className: str = "Tk", useTk: bool = True, sync: bool = False, use: str | None = None) -> None:
         super().__init__(screenName, baseName, className, useTk, sync, use)
         self.geometry("230x300")
-        self.iconbitmap("C:\\Users\\USUARIO\\Desktop\\ENTORNO\\perro-tejonero.ico")
+
+        # This line only works in Windows :(
+        #self.iconbitmap("./assets/icons/perro-tejonero.ico")
+
+        self.iconphoto(False, tkinter.PhotoImage(ICON_PATH))
         self.title("Updater")
         self.frame = Frame(self)
         self.values = ["TOTTUS", "RIPLEY", "OECHSLE", "TAI LOY", "ESTILOS", "SAGA FALABELLA"]
