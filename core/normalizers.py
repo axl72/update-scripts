@@ -11,14 +11,36 @@ import numpy as np
 
 class SagaNormalizer(Normalizer):
     def read(self, pathdir:Path):
-        pass
+        df_list = []
+        for path in pathdir.iterdir():
+            df =  pd.read_csv(path, sep='|', encoding='latin1')
+            df_list.append(df)
+        return df_list
+    
     def normalize_sells(self, df:DataFrame):
-        pass
+        def normalizar_fecha(date:str) -> str:
+            dia_semana, fecha = date.split('_')
+            dia, mes = fecha.split('-')
+            return f"{dia}/{mes}/{self.year}" 
+        df = df.iloc[:, :-6]
+        target_columns = ["UPC", "SKU", "ESTILO", "DESCRIPCION_LARGA", "SUBCLASE", "DESC_SUBCLASE", "MARCA", "MODELO", "NRO_LOCAL", "LOCAL"]
+        df = df.melt(id_vars=target_columns, var_name='FECHA', value_name='UNIDADES')
+        df["FECHA"] = df["FECHA"].apply(normalizar_fecha)
+        df["FECHA"] = pd.to_datetime(df["FECHA"], format="%d/%m/%Y")
+        df = df[df["UNIDADES"] != 0]
+        return df
 
     def normalize_stock(self, df:DataFrame):
-        pass
+        target_columns = ["SKU", "DESCRIPCION_LARGA", "MODELO", "NRO_LOCAL", "STOCK"]
+        df = df[target_columns]
+        df = df[df["STOCK"] != 0]
+        return df
+
     def read_stock(self, pathfile:Path) -> DataFrame:
-        pass
+        df =  pd.read_csv(pathfile, sep='|', encoding='latin1')
+        return df
+    def __str__(self):
+        return "SAGA-FALABELLA"
 class EstilosNormalizer(Normalizer):
     def read(self, pathdir:Path):
         df_list = []
@@ -68,7 +90,7 @@ class EstilosNormalizer(Normalizer):
                         "Stock Unidades", "Unidades Venta", "Retail Venta", "Unidades Compra", "Costo de Compra", "Costo FOB_USD_OC",
                         "Semana Antiguedad", "Sell Off", "Tipo Item", "Status", "Temporada"]
                )
-        id_columns = ["Sku", "Descripcion", "Marca", "Costo", "Ultimo Costo Compra", "Precio + IGV", "Inv. Transito"]
+        id_columns = ["Sku", "Descripcion", "Marca", "Costo", "Ultimo Costo Compra", "Precio + IGV"]
         unpivot_columns = df.columns.difference(id_columns)
         df = pd.melt(df, id_vars=id_columns, var_name="TIENDA", value_vars=unpivot_columns, value_name="CANTIDAD")
         df = df[df['TIENDA'].str.startswith('INV - ')]
@@ -300,12 +322,11 @@ class TottusNormalizer(Normalizer):
     def __str__(self):
         return 'TOTTUS'
 
-def saga_normalizer(df:pd.DataFrame):
+def saga_normalizer(df:pd.DataFrame, year:int):
     def normalizar_fecha(date:str) -> str:
         dia_semana, fecha = date.split('_')
         dia, mes = fecha.split('-')
-        año_actual = datetime.now().year
-        return f"{dia}/{mes}/{año_actual}" 
+        return f"{dia}/{mes}/{year}" 
     df = df.iloc[:, :-6]
     target_columns = ["UPC", "SKU", "ESTILO", "DESCRIPCION_LARGA", "SUBCLASE", "DESC_SUBCLASE", "MARCA", "MODELO", "NRO_LOCAL", "LOCAL"]
     df = df.melt(id_vars=target_columns, var_name='FECHA', value_name='UNIDADES')

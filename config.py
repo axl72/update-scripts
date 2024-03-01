@@ -6,4 +6,4 @@ USER = getpass.getuser()
 
 OUTPUT_PATH = f"C:\\Users\\{USER}\\Desktop\\REGISTROS INTEK\\OUTPUTS"
 
-ICON_PATH = "./assets/icons/perro-tejonero.ico"
+ICON_PATH = "assets\\perro-tejonero.ico"
